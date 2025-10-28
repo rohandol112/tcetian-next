@@ -181,7 +181,7 @@ export default function RegisterPage() {
                   whileTap={{ scale: 0.98 }}
                 >
                   <div className="font-semibold">Student</div>
-                  <div className="text-sm text-gray-600">I'm a TCET student</div>
+                  <div className="text-sm text-gray-600">I&apos;m a TCET student</div>
                 </motion.button>
                 <motion.button
                   type="button"

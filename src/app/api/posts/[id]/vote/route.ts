@@ -6,9 +6,10 @@ import Post from '@/models/Post'
 // POST /api/posts/[id]/vote - Upvote or downvote a post
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await connectDB()
 
     const user = await getAuthUser(request)
@@ -29,7 +30,7 @@ export async function POST(
       )
     }
 
-    const post = await Post.findById(params.id)
+    const post = await Post.findById(id)
     if (!post) {
       return NextResponse.json(
         { success: false, message: 'Post not found' },
@@ -82,7 +83,7 @@ export async function POST(
 // DELETE /api/posts/[id]/vote - Remove vote from a post
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB()
@@ -95,7 +96,7 @@ export async function DELETE(
       )
     }
 
-    const post = await Post.findById(params.id)
+    const post = await Post.findById(id)
     if (!post) {
       return NextResponse.json(
         { success: false, message: 'Post not found' },

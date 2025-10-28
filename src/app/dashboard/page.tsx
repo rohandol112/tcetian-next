@@ -232,7 +232,7 @@ export default function DashboardPage() {
             ) : (
               <div className="text-center py-12">
                 <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-600 mb-4">You haven't posted anything yet</p>
+                <p className="text-gray-600 mb-4">You haven&apos;t posted anything yet</p>
                 <Link
                   href="/forums/create"
                   className="inline-block px-6 py-3 bg-blue-600 text-white rounded-full font-medium hover:bg-blue-700 transition-all"

@@ -22,12 +22,13 @@ function verifyToken(request: NextRequest) {
 // GET /api/events/[id] - Get event details
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await connectDB();
 
-    const event = await Event.findById(params.id)
+    const event = await Event.findById(id)
       .populate('organizer', 'name email profilePicture role club')
       .populate('registrations', 'name email profilePicture student');
 
@@ -39,7 +40,7 @@ export async function GET(
     }
 
     // Increment view count
-    await Event.findByIdAndUpdate(params.id, { $inc: { viewCount: 1 } });
+    await Event.findByIdAndUpdate(id, { $inc: { viewCount: 1 } });
 
     // Convert to object to include virtuals
     const eventObj = event.toObject();
@@ -60,9 +61,10 @@ export async function GET(
 // PUT /api/events/[id] - Update event (Organizer only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const decoded = verifyToken(request);
     if (!decoded) {
       return NextResponse.json(
@@ -73,7 +75,7 @@ export async function PUT(
 
     await connectDB();
 
-    const event = await Event.findById(params.id);
+    const event = await Event.findById(id);
     if (!event) {
       return NextResponse.json(
         { success: false, message: 'Event not found' },
@@ -91,7 +93,7 @@ export async function PUT(
 
     const body = await request.json();
     const updatedEvent = await Event.findByIdAndUpdate(
-      params.id,
+      id,
       { $set: body },
       { new: true, runValidators: true }
     );
@@ -113,9 +115,10 @@ export async function PUT(
 // DELETE /api/events/[id] - Delete event (Organizer only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const decoded = verifyToken(request);
     if (!decoded) {
       return NextResponse.json(
@@ -126,7 +129,7 @@ export async function DELETE(
 
     await connectDB();
 
-    const event = await Event.findById(params.id);
+    const event = await Event.findById(id);
     if (!event) {
       return NextResponse.json(
         { success: false, message: 'Event not found' },
@@ -142,7 +145,7 @@ export async function DELETE(
       );
     }
 
-    await Event.findByIdAndDelete(params.id);
+    await Event.findByIdAndDelete(id);
 
     return NextResponse.json({
       success: true,

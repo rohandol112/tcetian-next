@@ -22,9 +22,10 @@ function verifyToken(request: NextRequest) {
 // POST /api/events/[id]/rsvp - RSVP to event (Student only)
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const decoded = verifyToken(request);
     if (!decoded || decoded.role !== 'student') {
       return NextResponse.json(
@@ -35,7 +36,7 @@ export async function POST(
 
     await connectDB();
 
-    const event = await Event.findById(params.id);
+    const event = await Event.findById(id);
     if (!event) {
       return NextResponse.json(
         { success: false, message: 'Event not found' },
@@ -112,14 +113,14 @@ export async function POST(
     });
 
     // Get updated registration count
-    const updatedEvent = await Event.findById(params.id).select('registrations');
+    const updatedEvent = await Event.findById(id).select('registrations');
     const registrationCount = updatedEvent?.registrations.length || 0;
 
     return NextResponse.json({
       success: true,
       message: 'RSVP successful',
       registrationCount,
-      eventId: params.id,
+      eventId: id,
     });
   } catch (error) {
     console.error('RSVP error:', error);
@@ -133,7 +134,7 @@ export async function POST(
 // DELETE /api/events/[id]/rsvp - Cancel RSVP (Student only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const decoded = verifyToken(request);
@@ -146,7 +147,7 @@ export async function DELETE(
 
     await connectDB();
 
-    const event = await Event.findById(params.id);
+    const event = await Event.findById(id);
     if (!event) {
       return NextResponse.json(
         { success: false, message: 'Event not found' },
@@ -166,14 +167,14 @@ export async function DELETE(
     });
 
     // Get updated registration count
-    const updatedEvent = await Event.findById(params.id).select('registrations');
+    const updatedEvent = await Event.findById(id).select('registrations');
     const registrationCount = updatedEvent?.registrations.length || 0;
 
     return NextResponse.json({
       success: true,
       message: 'RSVP cancelled successfully',
       registrationCount,
-      eventId: params.id,
+      eventId: id,
     });
   } catch (error) {
     console.error('Cancel RSVP error:', error);

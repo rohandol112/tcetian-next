@@ -6,12 +6,13 @@ import Post from '@/models/Post'
 // GET /api/posts/[id] - Get a single post by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await connectDB()
 
-    const post = await Post.findById(params.id)
+    const post = await Post.findById(id)
       .populate('author', 'name email role clubName')
       .lean()
 
@@ -39,7 +40,7 @@ export async function GET(
 // PUT /api/posts/[id] - Update a post (author only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB()
@@ -52,7 +53,7 @@ export async function PUT(
       )
     }
 
-    const post = await Post.findById(params.id)
+    const post = await Post.findById(id)
     if (!post) {
       return NextResponse.json(
         { success: false, message: 'Post not found' },
@@ -95,7 +96,7 @@ export async function PUT(
 // DELETE /api/posts/[id] - Delete a post (author only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB()
@@ -108,7 +109,7 @@ export async function DELETE(
       )
     }
 
-    const post = await Post.findById(params.id)
+    const post = await Post.findById(id)
     if (!post) {
       return NextResponse.json(
         { success: false, message: 'Post not found' },

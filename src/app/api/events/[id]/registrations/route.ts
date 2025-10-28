@@ -22,9 +22,10 @@ function verifyToken(request: NextRequest) {
 // GET /api/events/[id]/registrations - Get all registered students (Club only)
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const decoded = verifyToken(request);
     if (!decoded) {
       return NextResponse.json(
@@ -35,7 +36,7 @@ export async function GET(
 
     await connectDB();
 
-    const event = await Event.findById(params.id).populate('organizer', 'club.clubName');
+    const event = await Event.findById(id).populate('organizer', 'club.clubName');
     if (!event) {
       return NextResponse.json(
         { success: false, message: 'Event not found' },

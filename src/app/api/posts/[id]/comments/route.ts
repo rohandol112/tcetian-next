@@ -7,13 +7,14 @@ import Comment from '@/models/Comment'
 // GET /api/posts/[id]/comments - Get all comments for a post
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await connectDB()
 
     // Verify post exists
-    const post = await Post.findById(params.id)
+    const post = await Post.findById(id)
     if (!post) {
       return NextResponse.json(
         { success: false, error: 'Post not found' },
@@ -23,7 +24,7 @@ export async function GET(
 
     // Get top-level comments (no parent)
     const comments = await Comment.find({ 
-      post: params.id, 
+      post: id, 
       parentComment: null,
       isDeleted: false
     })
@@ -53,7 +54,7 @@ export async function GET(
 // POST /api/posts/[id]/comments - Add a comment to a post
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB()
@@ -77,7 +78,7 @@ export async function POST(
     }
 
     // Verify post exists
-    const post = await Post.findById(params.id)
+    const post = await Post.findById(id)
     if (!post) {
       return NextResponse.json(
         { success: false, error: 'Post not found' },
@@ -100,7 +101,7 @@ export async function POST(
     const comment = await Comment.create({
       content,
       author: user._id,
-      post: params.id,
+      post: id,
       parentComment: parentCommentId || null
     })
 
@@ -112,7 +113,7 @@ export async function POST(
     }
 
     // Increment post's comment count
-    await Post.findByIdAndUpdate(params.id, {
+    await Post.findByIdAndUpdate(id, {
       $inc: { commentCount: 1 }
     })
 

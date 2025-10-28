@@ -304,7 +304,7 @@ export default function EventDetailPage() {
                 <div className="flex items-center gap-3">
                   <CheckCircle2 className="w-8 h-8 text-emerald-600" />
                   <div>
-                    <p className="font-bold text-gray-900">You're registered!</p>
+                    <p className="font-bold text-gray-900">You&apos;re registered!</p>
                     <p className="text-sm text-gray-600">See you at the event</p>
                   </div>
                 </div>

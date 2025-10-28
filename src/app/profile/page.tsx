@@ -182,7 +182,7 @@ export default function ProfilePage() {
                           <p className="text-gray-600">{event.category}</p>
                         </div>
                         <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm font-medium">
-                          RSVP'd
+                          RSVP&apos;d
                         </span>
                       </div>
 
