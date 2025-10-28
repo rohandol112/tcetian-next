@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@layer base {
+  body {
+    @apply antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  /* Juspay-style bold buttons with shadows */
+  .btn {
+    @apply px-6 py-3.5 rounded-lg font-semibold text-[15px] transition-all duration-150 inline-flex items-center gap-2 outline-none;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 text-white shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-gray-900 border-2 border-gray-200 hover:border-gray-300 hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-ghost {
+    @apply text-gray-700 hover:bg-gray-50 active:bg-gray-100;
+  }
+
+  /* Card with subtle hover effect */
+  .card {
+    @apply bg-white rounded-2xl border border-gray-200 p-6 transition-all duration-200;
+  }
+
+  .card-hover {
+    @apply card hover:shadow-lg hover:border-gray-300 hover:-translate-y-1;
+  }
+
+  /* Input fields */
+  .input {
+    @apply w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-[15px] placeholder:text-gray-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all;
+  }
+
+  .select {
+    @apply input appearance-none cursor-pointer;
+  }
+
+  /* Badge system */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold;
+  }
+
+  .badge-blue {
+    @apply bg-blue-100 text-blue-700;
+  }
+
+  .badge-green {
+    @apply bg-green-100 text-green-700;
+  }
+
+  .badge-purple {
+    @apply bg-purple-100 text-purple-700;
+  }
+
+  .badge-orange {
+    @apply bg-orange-100 text-orange-700;
+  }
+}
+
+/* Custom gradient backgrounds - Juspay style */
+.gradient-blue {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-green {
+  background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+}
+
+.gradient-orange {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.gradient-purple {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+/* Blob shapes for decoration */
+.blob {
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  animation: blob 8s ease-in-out infinite;
+}
+
+@keyframes blob {
+  0%, 100% {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+  25% {
+    border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
+  }
+  50% {
+    border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%;
+  }
+  75% {
+    border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%;
+  }
+}
+
+/* Hide scrollbar for carousel */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
